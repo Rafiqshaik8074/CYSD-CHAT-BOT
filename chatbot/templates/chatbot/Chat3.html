@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYSD Chatbot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --user-bubble: #4361ee;
+      --bot-bubble: #f0f0f0;
+      --text-dark: #2b2d42;
+      --text-light: #f8f9fa;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      width: 100%;
+    }
+    
+    .chat-container {
+      width: 100%;
+      max-width: 1200px;
+      height: 92vh;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      /* border: 2px solid red; */
+    }
+    
+    .chat-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .chat-header i {
+      font-size: 1.5rem;
+    }
+    
+    .chat-header h2 {
+      font-weight: 600;
+    }
+    
+    #chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      
+    }
+    
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      line-height: 1.4;
+      position: relative;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .user {
+      align-self: flex-end;
+      background-color: var(--user-bubble);
+      color: var(--text-light);
+      border-bottom-right-radius: 4px;
+    }
+    
+    .bot {
+      align-self: flex-start;
+      background-color: var(--bot-bubble);
+      color: var(--text-dark);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .input-area {
+      display: flex;
+      padding: 15px;
+      background-color: white;
+      border-top: 1px solid #eee;
+    }
+    
+    #user-input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      outline: none;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+    
+    #user-input:focus {
+      border-color: var(--primary-color);
+    }
+    
+    .send-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .send-btn:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    .send-btn i {
+      font-size: 1.2rem;
+    }
+    
+    /* Loading animation */
+    .typing-indicator {
+      display: flex;
+      padding: 12px 16px;
+      background-color: var(--bot-bubble);
+      border-radius: 18px;
+      align-self: flex-start;
+      margin-bottom: 15px;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #666;
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+    
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes typingAnimation {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-5px);
+      }
+    }
+    
+    /* Scrollbar styling */
+    #chat-box::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    #chat-box::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    #chat-box::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+    
+    #chat-box::-webkit-scrollbar-thumb:hover {
+      background: #aaa;
+    }
+    
+    /* Timestamp */
+    .timestamp {
+      font-size: 0.7rem;
+      color: #999;
+      margin-top: 5px;
+      text-align: right;
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .chat-container {
+        height: 90vh;
+        border-radius: 0;
+      }
+      
+      body {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <i class="fas fa-robot"></i>
+      <h2>CYSD Assistant</h2>
+    </div>
+    
+    <div id="chat-box">
+      <!-- Messages will appear here -->
+    </div>
+    
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+      <button class="send-btn" onclick="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function addMessage(sender, text) {
+      const box = document.getElementById("chat-box");
+      const msg = document.createElement("div");
+      msg.className = `message ${sender}`;
+      
+      // Add timestamp
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      msg.innerHTML = `
+        <div>${text}</div>
+        <div class="timestamp">${timeString}</div>
+      `;
+      
+      box.appendChild(msg);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const box = document.getElementById("chat-box");
+      const indicator = document.createElement("div");
+      indicator.className = "typing-indicator";
+      indicator.id = "typing-indicator";
+      indicator.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      box.appendChild(indicator);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      const indicator = document.getElementById("typing-indicator");
+      if (indicator) {
+        indicator.remove();
+      }
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value.trim();
+      if (!message) return;
+
+      addMessage("user", message);
+      input.value = "";
+      
+      // Show typing indicator
+      showTypingIndicator();
+      
+      try {
+        const res = await fetch(`/get-response/?message=${encodeURIComponent(message)}`);
+        const data = await res.json();
+        
+        // Hide typing indicator and show response
+        hideTypingIndicator();
+        addMessage("bot", data.reply);
+      } catch (error) {
+        hideTypingIndicator();
+        addMessage("bot", "Sorry, I encountered an error. Please try again.");
+        console.error("Error:", error);
+      }
+    }
+    
+    // Allow sending message with Enter key
+    document.getElementById("user-input").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+    
+    // Initial welcome message
+    window.onload = function() {
+      setTimeout(() => {
+        addMessage("bot", "Hello! I'm the CYSD assistant. How can I help you today?");
+      }, 500);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CYSD Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    #chat-box {
+      border: 1px solid #ccc;
+      background: #fff;
+      padding: 15px;
+      height: 400px;
+      overflow-y: scroll;
+      border-radius: 10px;
+    }
+    .message { margin: 10px 0; }
+    .user { color: blue; font-weight: bold; }
+    .bot { color: green; font-weight: bold; }
+    .loading { color: #aaa; font-style: italic; }
+  </style>
+</head>
+<body>
+  <h2>Ask about CYSD 🧠</h2>
+  <div id="chat-box"></div>
+  <input type="text" id="user-input" placeholder="Ask something..." style="width: 80%;">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    function addMessage(sender, text, isLoading = false) {
+      const box = document.getElementById("chat-box");
+      const msg = document.createElement("div");
+      msg.className = 'message ' + sender + (isLoading ? ' loading' : '');
+      msg.innerText = isLoading ? text : sender.toUpperCase() + ": " + text;
+      msg.id = isLoading ? 'loading-message' : '';
+      box.appendChild(msg);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value;
+      if (!message) return;
+
+      // Display user's message
+      addMessage("user", message);
+      input.value = "";
+
+      // Show loading message
+      addMessage("bot", "Chatbot is typing...", true);
+
+      // Fetch bot response
+      const res = await fetch(`/get-response/?message=${encodeURIComponent(message)}`);
+      const data = await res.json();
+
+      // Remove loading message
+      const loadingMsg = document.getElementById("loading-message");
+      if (loadingMsg) loadingMsg.remove();
+
+      // Display bot response
+      addMessage("bot", data.reply);
+    }
+  </script>
+</body>
+</html>

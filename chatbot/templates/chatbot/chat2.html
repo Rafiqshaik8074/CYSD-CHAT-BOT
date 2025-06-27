@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CYSD Chatbot</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #chat-box { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
+    .message { margin: 10px 0; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+  <h2>Ask about CYSD 🧠</h2>
+  <div id="chat-box"></div>
+  <input type="text" id="user-input" placeholder="Ask something..." style="width: 80%;">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    function addMessage(sender, text) {
+      const box = document.getElementById("chat-box");
+      const msg = document.createElement("div");
+      msg.className = 'message ' + sender;
+      msg.textContent = sender.toUpperCase() + ": " + text;
+      box.appendChild(msg);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value;
+      if (!message) return;
+
+      addMessage("user", message);
+      input.value = "";
+
+      const res = await fetch(`/get-response/?message=${encodeURIComponent(message)}`);
+      const data = await res.json();
+      addMessage("bot", data.reply);
+    }
+  </script>
+</body>
+</html>
