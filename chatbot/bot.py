@@ -38,6 +38,7 @@ persist_directory = os.path.join(
     'embeddings_68',
     'embeddings_68'
 )
+
 vectorstore = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
 llm = OllamaLLM(model="llama3")
 

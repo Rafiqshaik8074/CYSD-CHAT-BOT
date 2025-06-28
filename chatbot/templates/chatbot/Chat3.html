@@ -43,7 +43,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      /* border: 2px solid red; */
+      /* border: 2px solid red !important; */
     }
     
     .chat-header {
@@ -52,7 +52,9 @@
       padding: 15px 20px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
+      /* border: 2px solid red !important; */
     }
     
     .chat-header i {
@@ -61,6 +63,17 @@
     
     .chat-header h2 {
       font-weight: 600;
+    }
+    .chat-header .chat-header-info{
+      height: 100%;
+      width: 40%;
+      /* border: 2px solid yellow; */
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .chat-header img{
+      height: 3rem;
     }
     
     #chat-box {
@@ -236,8 +249,12 @@
 <body>
   <div class="chat-container">
     <div class="chat-header">
-      <i class="fas fa-robot"></i>
+      <div class="chat-header-info">
+        <i class="fas fa-robot"></i>
       <h2>CYSD Assistant</h2>
+      </div>
+
+      <img src="https://www.greatplacetowork.in/great/api/assets/uploads/5085/logo/logo.png" alt="">
     </div>
     
     <div id="chat-box">
