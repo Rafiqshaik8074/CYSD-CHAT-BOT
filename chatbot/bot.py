@@ -34,8 +34,6 @@ embeddings = OllamaEmbeddings(model="nomic-embed-text")
 persist_directory = os.path.join(
     settings.BASE_DIR,
     'chatbot',
-    'embeddings_store',
-    'embeddings_68',
     'embeddings_68'
 )
 
