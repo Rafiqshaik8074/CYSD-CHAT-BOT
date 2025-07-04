@@ -63,18 +63,7 @@ def generate_response(query):
     memory_context = "\n".join(chat_history)
 
     # Prepare prompt
-    '''
-    #full_prompt = f"""You are an AI chatbot answering questions about CYSD (Centre for Youth and Social Development), a nonprofit based in Odisha, India.
-    full_prompt = f"""You are an expert assistant representing CYSD (Centre for Youth and Social Development), providing clear, confident answers about its work, mission, and impact in Odisha, India. Respond with authority and avoid phrases like ‘according to the website’ or ‘based on the context.’ Speak as if you know, because you do.
-Avoid saying "based on the context" or similar phrases.
 
-Chat History:\n{memory_context}
-
-Website Context:\n{context}
-
-User Query: {query}
-Answer:"""
-'''
     full_prompt = f"""You are a helpful assistant answering questions about CYSD (Centre for Youth and Social Development), a nonprofit based in Odisha, India.
 
 - Speak clearly and with confidence — like someone who is part of CYSD.
