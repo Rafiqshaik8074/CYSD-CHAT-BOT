@@ -69,7 +69,7 @@ def generate_response(query):
 - Do **not** mention "the website" or "the retrieved context."
 - Just answer the user's question as if you're directly explaining CYSD's work, values, and impact.
 - Keep your answer concise and focused.
-- Please make sure not to give wrong answer.
+- Only answer if the information is clearly present in the context; otherwise say "I'm not sure."
 - Please don't ask the user to visit the website.
 
 Chat History:
