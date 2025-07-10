@@ -5,7 +5,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 # from .rag import generate_response
-from .bot2 import generate_response
+from .bot3 import generate_response
 
 def chat_view(request):
     print('Hello world'.center(100, '-'))
