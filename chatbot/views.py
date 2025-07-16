@@ -5,7 +5,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 # from .rag import generate_response
-from .bot3 import generate_response
+# from .bot3 import generate_response
+from .bot4 import hybrid_chatbot
 
 def chat_view(request):
     print('Hello world'.center(100, '-'))
@@ -25,7 +26,8 @@ def get_response(request):
         user_query = request.GET.get('message', '')
         print('Message from frontend: ', user_query)
         if(user_query):
-            bot_reply = generate_response(user_query)
+            # bot_reply = generate_response(user_query)
+            bot_reply = hybrid_chatbot(user_query)
             print('Response from ChatBot: ', bot_reply)
             return JsonResponse({'reply': bot_reply})
     except Exception as e:
